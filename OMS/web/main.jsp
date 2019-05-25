@@ -187,21 +187,11 @@
                     <form action="main.jsp" id="login_form" method="post">
                         <div class="form-group fontcolorb" align="center">
                         <label class="fontcolor">Find Movie By</label>
-        
-                        <select name="selectType" >
-                        <option value="0"></option>
-                        <option value="1">Title</option>
-                        <option value="2">Genre</option>
-                        <option value="3">Price</option>
-                        <option value="4">Rating</option>
-                        <option value="5">Year</option>
-                        <option value="6">Status</option>
-                        </select>
-                        <input id="name" name="name" type="text"  maxlength="30">
+                        <input id="name" value="" name="content" type="text"  maxlength="30">
                         <button type="submit"  id="submit_btn" class="btn btn-warning btn-sm">Search</button>
                         <br>
                         <br>
-                        <button type="submit"  id="submit_btn" class="btn btn-danger btn-lg">View All Movies</button>
+                        <a href="main.jsp" id="submit_btn" class="btn btn-danger btn-lg">View All Movies</a>
                         </div>
                     </form>
                     
