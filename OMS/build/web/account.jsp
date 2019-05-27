@@ -77,7 +77,7 @@ String showMsg = "";
      
     <div class="container-fluid fontcolor">
         <div class="row content">
-           <h1 align="center" class="fontcolor">Account Details</h1> 
+           <h1 align="center" class="fontcolory">Account Details</h1> 
             <% if (!showMsg.equals("")) { %>
             <h3 align="center" class="fontcolorr">!【<%=showMsg%>】</h3>
             <% } %>
