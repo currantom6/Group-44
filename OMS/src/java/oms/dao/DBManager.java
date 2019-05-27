@@ -51,15 +51,33 @@ public class DBManager {
         st.executeUpdate("INSERT INTO LOGS VALUES ('"+email+"','"+datestr+"')");
     }
 //Add a movie-data into the database
-    public void addOrder(String ID, String movieTitle, String memberEmail, int moviePrice, String status) throws SQLException {        
-        st.executeUpdate("INSERT INTO ORDERS VALUES ('"+ID+"','"+movieTitle+"','"+memberEmail+"',"+moviePrice+",'"+status+"')");
-        //st.executeUpdate("UPDATE MOVIES SET COPIES= "+ copies +" WHERE TITLE='"+ title +"'");
+    public void addOrder(String ID, String movieTitle, String memberEmail, int copies, String status) throws SQLException {        
+        st.executeUpdate("INSERT INTO ORDERS VALUES ('"+ID+"','"+movieTitle+"','"+memberEmail+"',"+copies+",'"+status+"')");
+        //add order, and number of movie copies decrease.
+        String sql = "SELECT * FROM MOVIES WHERE TITLE='"+ movieTitle +"'";
+        ResultSet rs = st.executeQuery(sql); 
+        if (rs.next()) { //rs.next() moves cursor to next row (if any)
+            //retrieve other key details
+            int vcopies = rs.getInt("COPIES");
+            vcopies = vcopies - copies;
+            st.executeUpdate("UPDATE MOVIES SET COPIES= "+ vcopies +" WHERE TITLE='"+ movieTitle +"'");
+            rs.close();
+        }  
     }
 
-//delete a student from the database
+//delete a member from the database
     public void deleteMemberAccount(String email) throws SQLException{
         //code for delete-operation
         st.executeUpdate("DELETE FROM MEMBERS WHERE EMAIL='" + email + "'");
+        //test
+        String sql = "SELECT * FROM ORDERS WHERE MEMBEREMAIL='"+ email +"'";
+        ResultSet rs = st.executeQuery(sql); 
+        if (rs.next()) { //rs.next() moves cursor to next row (if any)
+            //retrieve other key details
+            String status = rs.getString("STATUS");
+            status = "cancelled";
+            st.executeUpdate("UPDATE ORDERS SET STATUS= '"+ status +"' WHERE MEMBEREMAIL='"+ email +"'");
+        }  
     }
 //delete a staff from the database
     public void deleteStaffAccount(String email) throws SQLException{
@@ -91,10 +109,26 @@ public class DBManager {
     public void updateMovie(String title, String genre, int price, int rating, int copies, int movieyear, String description, String url) throws SQLException {        
         st.executeUpdate("UPDATE MOVIES SET GENRE= '"+ genre +"',PRICE= "+ price +",RATING= "+ rating +",COPIES= "+ copies +",MOVIEYEAR= "+ movieyear +",DESCRIPTION= '"+ description +"',URL= '"+ url +"' WHERE TITLE='"+ title +"'");
     }
-//update a movie details in the database
-    public void cancelOrder(String title, String status) throws SQLException {        
-        st.executeUpdate("UPDATE ORDERS SET STATUS= '"+ status +"' WHERE MOVIETITLE='"+ title +"'");
+ //update a movie details in the database
+    public void updateOrder(String ID, int copies) throws SQLException {        
+        st.executeUpdate("UPDATE ORDERS SET ORDERNUM= "+ copies +" WHERE ID='"+ ID +"'");
     }
+    
+//cancel a order in the database
+    public void cancelOrder(String ID, String status, String movieTitle, int copies) throws SQLException {        
+        st.executeUpdate("UPDATE ORDERS SET STATUS= '"+ status +"' WHERE ID='"+ ID +"'");
+        //cancel order, then add those copies back.
+        String sql = "SELECT * FROM MOVIES WHERE TITLE='"+ movieTitle +"'";
+        ResultSet rs = st.executeQuery(sql); 
+        if (rs.next()) { //rs.next() moves cursor to next row (if any)
+            //retrieve other key details
+            int vcopies = rs.getInt("COPIES");
+            vcopies = vcopies + copies;
+            st.executeUpdate("UPDATE MOVIES SET COPIES= "+ vcopies +" WHERE TITLE='"+ movieTitle +"'");
+            rs.close();
+        }  
+    }
+    
     
 
 //Login - Find member by ID in the database
@@ -194,6 +228,30 @@ public class DBManager {
         
         return null;
     }
+    //find movie by title
+    public Order findOrder(String ID) throws SQLException {
+        Order order;
+        //setup the select sql query string
+        String sql = "SELECT * FROM ORDERS WHERE ID='"+ ID +"'";
+        //execute this query using the statement field
+        //add the results to a ResultSet
+        ResultSet rs = st.executeQuery(sql); 
+        //search the ResultSet for a student using the parameters
+        while (rs.next()) { //rs.next() moves cursor to next row (if any)
+            
+            //retrieve other key details (ID and password already collected from parameters)
+           String movietitle = rs.getString("MOVIETITLE");
+            String memberemail = rs.getString("MEMBEREMAIL");
+            int copies = rs.getInt("ORDERNUM");
+            String status = rs.getString("STATUS");
+         
+            //return order with correct values
+            return order = new Order(ID, movietitle,memberemail,copies,status);
+        }
+        
+        return null;
+    }
+    
     
     //check - check member in the database
     public Member checkMember(String email) throws SQLException {
@@ -306,12 +364,12 @@ public class DBManager {
         ResultSet rs = st.executeQuery(sql);
          
         while (rs.next()) {
-            int ID = rs.getInt("ID");
+            String ID = rs.getString("ID");
             String title = rs.getString("MOVIETITLE");
-            int price = rs.getInt("MOVIEPRICE");
+            int copies = rs.getInt("ORDERNUM");
             String status = rs.getString("STATUS");
             
-            Order order = new Order(ID,title,email,price,status);
+            Order order = new Order(ID,title,email,copies,status);
             listOrder.add(order);
         }
         return listOrder;
@@ -369,6 +427,31 @@ public class DBManager {
             findMembers.add(member);
         }
         return findMembers;
+    }
+    //Search - Find movie by title and genre in the database
+    public List<Order> findOrders(String ID) throws SQLException {
+        Orders orders;
+        List<Order> findOrders = new ArrayList<>();
+        //setup the select sql query string
+        String sql = "SELECT * FROM ORDERS WHERE ID ='"+ ID +"'";
+        //execute this query using the statement field
+        //add the results to a ResultSet
+        ResultSet rs = st.executeQuery(sql); 
+        //search the ResultSet for a student using the parameters
+        while (rs.next()) { //rs.next() moves cursor to next row (if any)
+            //retrieve other key details (already collected from parameters)
+            //String title = rs.getString("TITLE");
+            String movietitle = rs.getString("MOVIETITLE");
+            String memberemail = rs.getString("MEMBEREMAIL");
+            int copies = rs.getInt("ORDERNUM");
+            String status = rs.getString("STATUS");
+            
+            //return movie with correct values
+            Order order = new Order(ID, movietitle,memberemail,copies,status);
+            findOrders.add(order);
+        }
+        
+        return findOrders;
     }
 //List all orders from movie list
     public List<Log> listAllLogs(String email) throws SQLException {

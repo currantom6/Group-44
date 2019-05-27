@@ -17,7 +17,7 @@
 <%
         //Activate the database add-function once DBManager functions are completed
         DBManager manager = (DBManager)session.getAttribute("manager");
-	//set parameters
+	//get parameters
 	String title = request.getParameter("title");
         String genre = request.getParameter("genre");
 	int rating = Integer.parseInt(request.getParameter("rating"));
