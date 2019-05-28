@@ -38,7 +38,7 @@
 <h2 style = "text-align: center; color:#ff8c1a">Error, <%=errMessage %> !</h2>
 <%-- transfer to index page automaticaly --%>
 <%
-    	response.setHeader("refresh","2;url=login.jsp");
+    	response.setHeader("refresh","1;url=loginCenter.jsp");
 %>
 
 </body>
