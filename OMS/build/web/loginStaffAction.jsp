@@ -4,6 +4,7 @@
     Author     : chenyizhe
 --%>
 
+<%@page import="oms.controller.Validator"%>
 <%@page import="oms.dao.DBManager"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="oms.dao.DBConnector"%>
@@ -34,18 +35,29 @@
                 Date date = new java.util.Date();
                 DateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
                 String datestr = dateFormat.format(date);
-                        
+                // Data Validator
+                Validator v = new Validator(); 
                 //login error messgae
                 if (email==null || "".equals(email)){
-                    session.setAttribute("errorMessage", "Please input email");
-                    response.sendRedirect(request.getContextPath()+"/loginError.jsp");
+                    session.setAttribute("emailErr", "Please input email");
+                response.sendRedirect("loginStaff.jsp");
                     return;
    		}
    		else if(password==null || "".equals(password)){
-                    session.setAttribute("errorMessage", "Please input password");
-                    response.sendRedirect(request.getContextPath()+"/loginError.jsp");
+                    session.setAttribute("passErr", "Please input password");
+                response.sendRedirect("loginStaff.jsp");
                     return;
    		}
+                else if (!v.validateEmail(email)) {
+                session.setAttribute("emailErr", "Email format is incorrect");
+                response.sendRedirect("loginStaff.jsp");
+                return;
+                } 
+                else if (!v.validatePassword(password)) {
+                session.setAttribute("passErr", "Password format is incorrect");
+                response.sendRedirect("loginStaff.jsp");
+                return;
+                } 
               
                 String nextPage= "";                     
                 Object user = manager.findStaff(email,password);
@@ -67,7 +79,7 @@
 		response.sendRedirect(nextPage);
 		    return ;
    		}catch(Exception e){
-                    session.setAttribute("errorMessage", e.toString());
+                    session.setAttribute("errorMessage", "User Does not exist");
                     response.sendRedirect(request.getContextPath()+"/loginError.jsp");
    		}
                 //error handing code 
