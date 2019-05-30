@@ -1,7 +1,7 @@
 <%-- 
     Document   : editMovieAction
     Created on : 19/05/2019, 1:50:45 PM
-    Author     : chenyizhe
+    Author     : xianyulee
 --%>
 
 <%@page import="oms.dao.DBManager"%>

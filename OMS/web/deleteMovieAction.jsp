@@ -1,7 +1,7 @@
 <%-- 
     Document   : deleteMovieAction
     Created on : 05/05/2019, 3:36:27 PM
-    Author     : chenyizhe
+    Author     : xianyulee
 --%>
 
 <%@page import="oms.dao.DBManager"%>
