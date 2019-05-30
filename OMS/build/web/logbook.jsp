@@ -36,7 +36,18 @@
             }else{
         logList = manager.listAllLogs(s.getEmail());
         }
+        
        %>
+       
+        <% 
+        if (request.getParameter("content") != null) {
+            String content = request.getParameter("content");
+            String email = content;
+            String logdate = content;
+            logList = manager.findLogs(email,logdate);
+        }
+        %>
+
        
        <%--Navigation Bar --%>
 
@@ -52,6 +63,15 @@
         <div class="row content">
         <br>
         <h2 align="center" class="fontcolory">LogBook Center</h2>
+         <form action="logbook.jsp" id="login_form" method="post">
+             <div class="form-group fontcolorb" align="center">
+                <label class="fontcolor">Find Log By</label>
+                <input id="name" name="content" type="text"  maxlength="30">
+                <button type="submit"  id="submit_btn" class="btn btn-warning btn-sm">Search</button>
+                <br>
+                <a href="logbook.jsp"   id="submit_btn" class="btn btn-danger btn-lg">View Logs</a>
+             </div>
+        </form>
         <br>
         <div class="col-sm-2"></div>
         <div class="col-sm-8 text-center fontcolor">
@@ -84,6 +104,6 @@
     </div>
     
     </body>
-    
+
     
 </html>

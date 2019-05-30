@@ -403,6 +403,30 @@ public class DBManager {
         
         return findMovies;
     }
+    //Search - Find logs in the database
+    public List<Log> findLogs(String email, String logdate) throws SQLException {
+        Logs logs;
+        List<Log> findLogs = new ArrayList<>();
+        //setup the select sql query string
+        String sql = "SELECT * FROM LOGS WHERE EMAIL ='"+ email +"' OR LOGDATE ='"+ logdate +"'";
+        //execute this query using the statement field
+        //add the results to a ResultSet
+        ResultSet rs = st.executeQuery(sql); 
+        //search the ResultSet for a student using the parameters
+        while (rs.next()) { //rs.next() moves cursor to next row (if any)
+            //retrieve other key details (already collected from parameters)
+            //String title = rs.getString("TITLE");
+            String vemail = rs.getString("EMAIL");
+            String vlogdate = rs.getString("LOGDATE");
+
+            
+            //return movie with correct values
+            Log log = new Log(vemail,vlogdate);
+            findLogs.add(log);
+        }
+        
+        return findLogs;
+    }
 //Search - Find member  in the database
     public List<Member> findMembers(String name, String ID) throws SQLException {
         Members members;
