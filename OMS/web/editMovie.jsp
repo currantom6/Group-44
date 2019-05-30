@@ -21,6 +21,7 @@
         response.sendRedirect(request.getContextPath() + "/index.jsp");
         return;
     }
+    
     DBManager manager = (DBManager)session.getAttribute("manager");
     //movie list
     List<Movie> movieList = null;

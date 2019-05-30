@@ -107,7 +107,7 @@
                             
                             <%-- if is available, display the add cart button which refer to bookingPage. --%>
                             <% if (v.isStatus()){ %>
-                            <a class="btn btn-default" href="<%=request.getContextPath()%>/booking.jsp?memail=<%=m.getEmail()%>&vtitle=<%=v.getTitle()%>&vprice=<%=v.getPrice()%>">Order</a>
+                            <a class="btn btn-default" href="<%=request.getContextPath()%>/order.jsp?memail=<%=m.getEmail()%>&vtitle=<%=v.getTitle()%>&vprice=<%=v.getPrice()%>">Order</a>
                             <% }else{ %>
                             <button type="button" class="btn btn-warning" disabled>Out of Stock</button>
                             <% } %>
@@ -129,6 +129,8 @@
                     <% } %>
                     
                 </div>
+                    
+                    
                     
                     
                 <%-- Right column --%>  
@@ -211,7 +213,7 @@
                             
                             <%-- if is available, display the add cart button which refer to bookingPage. --%>
                             <% if (v.isStatus()){ %>
-                            <a class="btn btn-default" href="#">Book</a>
+                            <a class="btn btn-default" href="#">Order</a>
                             <% }else{ %>
                             <button type="button" class="btn btn-warning" disabled>Out of Stock</button>
                             <% } %>

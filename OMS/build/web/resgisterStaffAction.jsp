@@ -22,31 +22,33 @@
 	String password = request.getParameter("password");
 	String passwordCheck = request.getParameter("confirmpassword");
 	String name  = request.getParameter("name");
-        int phone = Integer.parseInt(request.getParameter("phone"));
+        String phonestr = request.getParameter("phone");
+        
         String position = request.getParameter("position");
 	String birthdaystr = request.getParameter("birthday");
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         int key = (new Random()).nextInt(999999);
         String ID = "" + key;
-        
+        // Data Validator
+        Validator v = new Validator();
         //Create a connection and initialize DB conn-field
         DBManager manager = (DBManager)session.getAttribute("manager");
         
         // error handling message
         if (email == null || "".equals(email)){
-		session.setAttribute("errorMessage", "Please inpute email");
-   		response.sendRedirect(request.getContextPath()+"/registerError.jsp");
+		session.setAttribute("emailErr", "Please input email!");
+                response.sendRedirect("registerStaffForm.jsp");
    		return;//check email
 	}
 	else if (password==null || "".equals(password) || passwordCheck==null 
 	|| "".equals(passwordCheck) || !password.equals(passwordCheck)){
-		session.setAttribute("errorMessage", "Password is different");
-   		response.sendRedirect(request.getContextPath()+"/registerError.jsp");
+		session.setAttribute("passErr", "Please check password!");
+                response.sendRedirect("registerStaffForm.jsp");
    		return; // check password
 	}
 	else if(name == null || "".equals(name)){
-		session.setAttribute("errorMessage", "Please input name");
-   		response.sendRedirect(request.getContextPath()+"/registerError.jsp");
+		session.setAttribute("nameErr", "Please input name!");
+                response.sendRedirect("registerStaffForm.jsp");
    		return; // check name 
 	}
         else if(birthdaystr == null || "".equals(birthdaystr)){
@@ -54,12 +56,34 @@
    		response.sendRedirect(request.getContextPath()+"/registerError.jsp");
    		return; // check dob
         }
+        else if (!v.validateEmail(email)) {
+                session.setAttribute("emailErr", "Email format is incorrect");
+                response.sendRedirect("registerStaffForm.jsp");
+                return;
+        } 
+        else if (!v.validatePassword(password)) {
+                session.setAttribute("passErr", "Password format is incorrect");
+                response.sendRedirect("registerStaffForm.jsp");
+                return;
+        } 
+        else if (!v.validateName(name)) {
+                session.setAttribute("nameErr", "Name format is incorrect!");
+                response.sendRedirect("registerStaffForm.jsp");
+                return;
+        }
+        else if (phonestr == null || !v.validatePhone(phonestr)) {
+                session.setAttribute("phoneErr", "invalid phone number!");
+                response.sendRedirect("registerStaffForm.jsp");
+                return;
+        }
+        
+        //check if user exits or not
 	if (manager.checkMember(email)!= null || manager.checkStaff(email) != null){
 		session.setAttribute("errorMessage", "User already exist!");
 		response.sendRedirect(request.getContextPath()+"/registerError.jsp");
 		return; 
 	}
-
+        int phone = Integer.parseInt(request.getParameter("phone"));
 	Object user = null;
 	String nextPage= "";
 	Staff s = new Staff(ID,name,email,password,position,birthdaystr,phone);

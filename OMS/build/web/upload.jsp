@@ -33,6 +33,15 @@
   </head>
   
   <body style="background-color: rgb(38, 38, 38);">
+      <%
+           String titleErr = (String) session.getAttribute("titleErr");
+           String ratingErr = (String) session.getAttribute("ratingErr");
+           String priceError = (String) session.getAttribute("priceErr");
+           String yearError = (String) session.getAttribute("yearErr");
+           String copyError = (String) session.getAttribute("copyErr");
+           String desError = (String) session.getAttribute("desErr");
+           String urlError = (String) session.getAttribute("urlErr");
+      %>
   <%--Navigation Bar --%>
          <%--Navigation Bar --%>
        <% if( s != null && s.getPosition().equals("Admin") ) { %>
@@ -47,7 +56,8 @@
 					<div class="form-group">
 						<label>Title</label>
 						<input id="title" value="" name="title" type="text" class="form-control" placeholder="Enter movie title">
-					</div>
+                                                <p class="fontcolorr"><%=(titleErr != null ? titleErr : "")%></p>
+                                        </div>
                                         <div class="form-group">
 						<label>Genre</label>
 						<select class="form-control" name = "genre">
@@ -68,34 +78,49 @@
 					<div class="form-group">
 						<label>Rating</label>
 						<input id="rating" value="" name="rating" type="number" class="form-control" placeholder="(Max 10) Eg: 8 ">
-					</div>
+                                                <p class="fontcolorr"><%=(ratingErr != null ? ratingErr : "")%></p>
+                                        </div>
                                         <div class="form-group">
 						<label>Price</label>
 						<input id="price" value="" name="price" type="number" class="form-control" placeholder="Eg:30 ">
-					</div>
+                                                <p class="fontcolorr"><%=(priceError != null ? priceError : "")%></p>
+                                        </div>
                                         <div class="form-group">
 						<label>Year</label>
 						<input id="year" value="" name="year" type="number" class="form-control" placeholder="Eg:2018 ">
-					</div>
+                                                <p class="fontcolorr"><%=(yearError != null ? yearError : "")%></p>
+                                        </div>
                                         <div class="form-group">
 						<label>Copies</label>
 						<input id="copies" value="" name="copies" type="number" class="form-control" placeholder="Eg:15 ">
-					</div>
+                                                <p class="fontcolorr"><%=(copyError != null ? copyError : "")%></p>
+                                        </div>
                                         <div class="form-group">
                                              <label>Movie Description</label>
                                              <textarea name="description" class="form-control" id="description" rows="3"></textarea>
+                                             <p class="fontcolorr"><%=(desError != null ? desError : "")%></p>
                                         </div>
                                         <div class="form-group">
 						<label>Poster URL</label>
 						<input id="title" value="" name="url" type="url" class="form-control" placeholder="Enter Image URL">
-                                       </div>
+                                                <p class="fontcolorr"><%=(urlError != null ? urlError : "")%></p>
+                                        </div>
                                        
 					<div>
 					    
    						<button type="submit" class="btn btn-primary">Upload</button>
 					</div>
-                               
 				</form>
+                                        <%
+                                        titleErr = ratingErr = priceError = yearError = copyError = desError = urlError = null;                
+                                        session.removeAttribute("titleErr"); 
+                                        session.removeAttribute("ratingErr"); 
+                                        session.removeAttribute("priceErr");
+                                        session.removeAttribute("yearErr");
+                                        session.removeAttribute("copyErr");
+                                        session.removeAttribute("desErr");
+                                        session.removeAttribute("urlErr");
+                                        %>
            
 </div>
   </body>

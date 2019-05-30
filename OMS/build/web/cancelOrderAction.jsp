@@ -1,16 +1,19 @@
 <%-- 
-    Document   : loginError
-    Created on : 20/05/2019, 6:04:11 PM
+    Document   : cancelOrderAction
+    Created on : 26/05/2019, 7:35:56 PM
     Author     : chenyizhe
 --%>
 
+<%@page import="oms.dao.DBManager"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="oms.dao.DBConnector"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page import="oms.*" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>Login Error</title>
+  <title>Delete Members...</title>
   <link rel="stylesheet" href="css/bootstrap.min.css" >
   <link rel="stylesheet" href="css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -18,10 +21,20 @@
 </head>
 
 <body style="background-color: rgb(38, 38, 38);">
-<%
-  	String errMessage = (String)session.getAttribute("errorMessage");
-  	
- %>
+    <%
+        //Activate the database add-function once DBManager functions are completed
+    DBManager manager = (DBManager)session.getAttribute("manager");
+    %>
+<% //check the email then delete the account.
+    if (request.getParameter("orderid") != null && !request.getParameter("orderid").equals("")){
+        String orderid = request.getParameter("orderid");
+        String movieTitle = request.getParameter("vtitle");
+        int copies = Integer.parseInt(request.getParameter("onum"));
+        String status = "cancelled";
+        //delete member account from database
+        manager.cancelOrder(orderid,status,movieTitle,copies);
+    }
+%>
 <%--Navigation Bar --%>
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
@@ -35,10 +48,12 @@
                 </div>
             </div>
         </nav>
-<h2 style = "text-align: center; color:#ff8c1a">Error, <%=errMessage %> !</h2>
+        
+<h2 style = "text-align: center; color:#ff8c1a">Cancel you selected orders.....</h2>
+
 <%-- transfer to index page automaticaly --%>
 <%
-    	response.setHeader("refresh","1;url=loginCenter.jsp");
+    response.setHeader("refresh","1;url=booking.jsp");
 %>
 
 </body>

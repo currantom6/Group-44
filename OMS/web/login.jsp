@@ -18,6 +18,10 @@
   <script type="text/javascript" src="js/time.js"></script>
 </head>
 <body style="background-color: rgb(38, 38, 38);" onload="startTime()">
+    <%
+           String emailErr = (String) session.getAttribute("emailErr");
+           String passError = (String) session.getAttribute("passErr");
+      %>
 
     <%--Navigation Bar --%>
         <nav class="navbar navbar-inverse">
@@ -42,15 +46,22 @@
           <div class="form-group">
             <label>Email</label>
             <input value="" name="email" type="text" class="form-control" placeholder="Enter email" id="email">
+            <p class="fontcolorr"><%=(emailErr != null ? emailErr : "")%></p>
           </div>
           <div class="form-group">
             <label>Password</label>
             <input value="" name="password" type="password" class="form-control" id="password" placeholder="Enter password">
+            <p class="fontcolorr"><%=(passError != null ? passError : "")%></p>
           </div>
           
          
             <button type="submit" class="btn btn-primary"> &nbsp;Login&nbsp; </button> 
         </form>
+          <%
+           emailErr = passError = null;                
+           session.removeAttribute("emailErr"); 
+           session.removeAttribute("passErr");
+          %>
           <br>
           <p>Not a member? Click here to register</p>
           <p><a href="register.jsp">Register</a></p>

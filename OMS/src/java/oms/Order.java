@@ -11,18 +11,18 @@ package oms;
  */
 public class Order {
 
-    private int orderid;
+    private String orderid;
     private String movieTitle;
-    private int moviePrice;
+    private int ordernum;
     private String memberName;
     private String memberEmail;
     private String orderStatus;
 
-    public int getOrderid() {
+    public String getOrderid() {
         return orderid;
     }
 
-    public void setOrderid(int orderid) {
+    public void setOrderid(String orderid) {
         this.orderid = orderid;
     }
 
@@ -33,14 +33,16 @@ public class Order {
     public void setMovieTitle(String movieTitle) {
         this.movieTitle = movieTitle;
     }
-    
-    public int getMoviePrice() {
-        return moviePrice;
+
+    public int getOrdernum() {
+        return ordernum;
     }
 
-    public void setMoviePrice(int moviePrice) {
-        this.moviePrice = moviePrice;
-    }   
+    public void setOrdernum(int ordernum) {
+        this.ordernum = ordernum;
+    }
+    
+    
 
     
     public String getMemberName() {
@@ -71,10 +73,10 @@ public class Order {
 
     public Order(){}
 
-    public Order(int ID,String title, String email,int price,String status){
+    public Order(String ID,String title, String email,int ordernum,String status){
         this.orderid = ID;
         this.movieTitle = title;
-        this.moviePrice = price;
+        this.ordernum = ordernum;
         this.memberEmail = email;
         this.orderStatus = status; 
     }
@@ -82,7 +84,7 @@ public class Order {
 
     @Override
     public String toString(){
-        return "id: "+orderid+"| movie's title: "+movieTitle+"| movie Price: "+moviePrice+"| member's name "+memberName+" | member's email "+memberEmail+" | status: "+orderStatus;
+        return "id: "+orderid+"| movie's title: "+movieTitle+"| order num: "+ordernum+"| member's name "+memberName+" | member's email "+memberEmail+" | status: "+orderStatus;
     }
 
 
