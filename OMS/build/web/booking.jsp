@@ -62,7 +62,7 @@
                          <%-- search movie --%>
                     <form action="booking.jsp" id="login_form" method="post">
                         <div class="form-group fontcolorb" align="center">
-                        <label class="fontcolor">Find Order By</label>
+                        <label class="fontcolor">Find Order By (Order ID)</label>
                         <input id="name" name="content" type="text"  maxlength="30">
                         <button type="submit"  id="submit_btn" class="btn btn-warning btn-sm">Search</button>
                         <br>

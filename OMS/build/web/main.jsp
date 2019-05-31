@@ -108,8 +108,8 @@
                             <%-- if is available, display the add cart button which refer to bookingPage. --%>
                             <% if (v.isStatus()){ %>
                             <a class="btn btn-default" href="<%=request.getContextPath()%>/order.jsp?memail=<%=m.getEmail()%>&vtitle=<%=v.getTitle()%>&vprice=<%=v.getPrice()%>">Order</a>
-                            <% }else{ %>
-                            <button type="button" class="btn btn-warning" disabled>Out of Stock</button>
+                            <% }else if (v.getCopies()==0){ %>
+                            <button type="button" class="btn btn-warning" disabled="true">Out of Stock</button>
                             <% } %>
                             </li>
                             </ul>
@@ -214,8 +214,8 @@
                             <%-- if is available, display the add cart button which refer to bookingPage. --%>
                             <% if (v.isStatus()){ %>
                             <a class="btn btn-default" href="#">Order</a>
-                            <% }else{ %>
-                            <button type="button" class="btn btn-warning" disabled>Out of Stock</button>
+                            <% }else if (v.getCopies()==0){ %>
+                            <button type="button" class="btn btn-warning" disabled="true">Out of Stock</button>
                             <% } %>
                             </li>
                             </ul>
